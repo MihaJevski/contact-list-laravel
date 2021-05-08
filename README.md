@@ -6,12 +6,13 @@ The main purpose of the application is to organize contacts.
 
 1) Clone the repo
 2) Run `composer install`
-3) Run `php artisan key:generate`
-4) Run `php artisan jwt:secret` - to generate jwt token
-4) Run `cp .env.example .env`
-4) Setup `MAIL_RECEIVER_ADDRESS` in `.env` file 
-4) Setup databases config
-4) Run `php artisan migrate`
+3) Run `cp .env.example .env`   
+4) Run `php artisan key:generate`
+5) Run `php artisan jwt:secret` - to generate jwt token
+6) Setup `MAIL_RECEIVER_ADDRESS` in `.env` file 
+7) Setup databases config
+8) Setup mail config
+9) Run `php artisan migrate`
 
 ### Seed the users and contacts
 
