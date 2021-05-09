@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Events\ContactDelete;
+use App\Events\NewContactCreatedEvent;
 use App\Repositories\ContactRepository;
 
 class ContactService
@@ -37,7 +38,11 @@ class ContactService
      */
     public function create($data)
     {
-        return $this->repository->create($data);
+        $contact = $this->repository->create($data);
+
+        NewContactCreatedEvent::dispatch($contact);
+
+        return $contact;
     }
 
     /**

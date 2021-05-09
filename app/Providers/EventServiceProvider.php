@@ -3,11 +3,12 @@
 namespace App\Providers;
 
 use App\Events\ContactDelete;
+use App\Events\NewContactCreatedEvent;
 use App\Listeners\ContactDeleteSendMail;
+use App\Listeners\WelcomeNewContactListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         ContactDelete::class => [
             ContactDeleteSendMail::class
+        ],
+        NewContactCreatedEvent::class => [
+            WelcomeNewContactListener::class
         ]
     ];
 

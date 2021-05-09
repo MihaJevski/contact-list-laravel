@@ -2,7 +2,11 @@
 
 namespace Tests\Feature\Http\Controllers\Api\V1;
 
+use App\Events\NewContactCreatedEvent;
+use App\Mail\WelcomeNewContactMail;
 use App\Models\Contact;
+use Illuminate\Support\Facades\Event;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 /**
@@ -151,6 +155,38 @@ class ContactControllerTest extends TestCase
                 ],
                 'message' => 'Contact successfully created'
             ]);
+    }
+
+    /** @test */
+    public function an_event_is_fired_when_admin_creates_contact()
+    {
+        $this->actingAsAdmin();
+
+        $payload = make(Contact::class)->toArray();
+
+        Event::fake([NewContactCreatedEvent::class]);
+
+        $this->postJson($this->url, $payload);
+
+        Event::assertDispatched(NewContactCreatedEvent::class);
+        Event::assertDispatchedTimes(NewContactCreatedEvent::class);
+    }
+
+    /** @test */
+    public function a_welcome_message_is_sent_when_admin_creates_contact()
+    {
+        $this->withoutExceptionHandling();
+
+        $this->actingAsAdmin();
+
+        $payload = make(Contact::class)->toArray();
+
+        Mail::fake();
+
+        $this->postJson($this->url, $payload);
+
+        Mail::assertQueued(WelcomeNewContactMail::class, 1);
+        Mail::assertNothingSent();
     }
 
     /** @test */
